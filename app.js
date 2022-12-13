@@ -4,24 +4,17 @@ const session = require("express-session");
 var passport = require("passport");
 var crypto = require("crypto");
 var routes = require("routes");
-const e = require("express");
+const MongoStore = require("connect-mongo");
+
+const connection = require("./config/database");
 
 //mongodb connection
-const mongoDB =
-  "mongodb+srv://nakul:Trivedi2242000@cluster0.vxv7ezi.mongodb.net/test";
-mongoose.set("strictQuery", false);
-mongoose.connect(mongoDB, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error: "));
-db.once("open", function () {
-  console.log("Connected successfully");
-});
 
 require("dotenv").config();
+
+// passport authentication
+
+require("./config/passport");
 
 var app = express();
 
@@ -29,10 +22,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //sessions
-const sessionstore = new mongoose.Schema({
-  session: String,
+const sessionstore = MongoStore.create({
+  mongoUrl: process.env.DB_STRING,
+  collection: "sessions",
 });
-
 app.use(
   session({
     secret: process.env.SECRET,
@@ -44,10 +37,6 @@ app.use(
     },
   })
 );
-
-// passport authentication
-
-require("./config/passport");
 
 //routes
 
