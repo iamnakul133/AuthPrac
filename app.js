@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 var passport = require("passport");
 var crypto = require("crypto");
-var routes = require("routes");
+var routes = require("./routes");
 const MongoStore = require("connect-mongo");
 
 const connection = require("./config/database");
@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 
 //sessions
 const sessionstore = MongoStore.create({
-  mongoUrl: process.env.DB_STRING,
+  mongoUrl: "mongodb://localhost:27017/authtutdb",
   collection: "sessions",
 });
 app.use(
@@ -42,4 +42,7 @@ app.use(
 
 app.use(routes);
 
-app.listen(5000);
+app.listen(3000, (err) => {
+  if (err) console.log(err);
+  console.log("server listening on Port", 3000);
+});

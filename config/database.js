@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 require("dotenv").config();
-console.log("hi");
+
 /**
  * -------------- DATABASE ----------------
  */
@@ -18,12 +18,6 @@ const conn = "mongodb://localhost:27017/authtutdb";
 const connection = mongoose.createConnection(conn, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-});
-
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error: "));
-db.once("open", function () {
-  console.log("Connected successfully");
 });
 
 // Creates simple schema for a User.  The hash and salt are derived from the user's given password when they register
